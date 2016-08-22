@@ -1,8 +1,8 @@
 package com.example.igor.translator.ui.AddWord;
 
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -32,6 +32,8 @@ import rx.subscriptions.CompositeSubscription;
 public class AddWordActivity extends AppCompatActivity implements AddWordContract.View {
     public static final String NEW_WORD = "NEW_WORD";
     public static final int OK = 1;
+    private static final String FROM_LANG_CODE = "FROM_LANG_CODE";
+    private static final String TO_LANG_CODE = "TO_LANG_CODE";
 
     private TextView tvTranslatedWord;
     private Button btnAddWord;
@@ -40,7 +42,6 @@ public class AddWordActivity extends AppCompatActivity implements AddWordContrac
     private ProgressBar pbSearch;
     private Spinner spinnerFromLang;
     private Spinner spinnerToLang;
-    private SearchView svWordSearch;
 
     @Inject
     AddWordContract.Presenter presenter;
@@ -57,9 +58,13 @@ public class AddWordActivity extends AppCompatActivity implements AddWordContrac
         super.onCreate(savedInstanceState);
 
         TranslatorApp.getAppComponent(this).inject(this);
-        presenter.setView(this);
 
         setContentView(R.layout.activity_add_word);
+
+        if (savedInstanceState != null){
+            fromLang = savedInstanceState.getParcelable(FROM_LANG_CODE);
+            toLang = savedInstanceState.getParcelable(TO_LANG_CODE);
+        }
 
         etOriginalWord = (EditText) findViewById(R.id.et_original_word);
         btnAddWord = (Button) findViewById(R.id.add_word);
@@ -82,7 +87,7 @@ public class AddWordActivity extends AppCompatActivity implements AddWordContrac
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Lang lang = fromLanguages.get((int)l);
-                presenter.fromLangSelected(lang.code);
+                presenter.fromLangSelected(lang.code());
                 fromLang = lang;
             }
 
@@ -120,8 +125,16 @@ public class AddWordActivity extends AppCompatActivity implements AddWordContrac
         }
     };
 
-    void makeSearch(){
-        presenter.searchString(etOriginalWord.getText().toString(), fromLang.code, toLang.code);
+    private void makeSearch(){
+        presenter.searchString(etOriginalWord.getText().toString(), fromLang.code(), toLang.code());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(FROM_LANG_CODE, fromLang);
+        outState.putParcelable(TO_LANG_CODE, toLang);
     }
 
     @Override
@@ -137,6 +150,9 @@ public class AddWordActivity extends AppCompatActivity implements AddWordContrac
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(t -> makeSearch())
         );
+
+        presenter.attachView(this);
+        presenter.start();
     }
 
     @Override
@@ -144,6 +160,7 @@ public class AddWordActivity extends AppCompatActivity implements AddWordContrac
         super.onPause();
 
         subscriptions.unsubscribe();
+        presenter.detachView();
     }
 
     @Override
@@ -174,15 +191,23 @@ public class AddWordActivity extends AppCompatActivity implements AddWordContrac
     public void pbSearchSetEnabled(boolean enabled) { pbSearch.setVisibility(enabled?View.VISIBLE:View.INVISIBLE); }
 
     @Override
-    public void setFromLanguages(ArrayList<Lang> fromLang) {
+    public void setFromLanguages(ArrayList<Lang> fromLangs) {
         fromAdapter.clear();
-        fromAdapter.addAll(fromLang);
+        fromAdapter.addAll(fromLangs);
+
+        if (this.fromLang != null) {
+            spinnerFromLang.setSelection(fromAdapter.getPosition(this.fromLang));
+        }
     }
 
     @Override
     public void setToLanguages(ArrayList<Lang> toLanguages) {
         toAdapter.clear();
         toAdapter.addAll(toLanguages);
+
+        if (this.toLang != null) {
+            spinnerToLang.setSelection(toAdapter.getPosition(this.toLang));
+        }
     }
 
     @Override

@@ -2,13 +2,6 @@ package com.example.igor.translator;
 
 import android.app.Application;
 
-import com.example.igor.translator.api.YandexAPIService;
-import com.example.igor.translator.data.WordListDataSource;
-import com.example.igor.translator.ui.AddWord.AddWordContract;
-import com.example.igor.translator.ui.AddWord.AddWordPresenter;
-import com.example.igor.translator.ui.List.WordListContract;
-import com.example.igor.translator.ui.List.WordListPresenter;
-
 import javax.inject.Singleton;
 
 import dagger.Module;

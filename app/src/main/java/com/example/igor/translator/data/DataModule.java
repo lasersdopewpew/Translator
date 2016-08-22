@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.igor.translator.data.local;
+package com.example.igor.translator.data;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.igor.translator.data.WordListDataSource;
-import com.example.igor.translator.ui.List.WordListContract;
-import com.example.igor.translator.ui.List.WordListPresenter;
+import com.example.igor.translator.data.api.YandexApiService;
+import com.example.igor.translator.data.local.DbOpenHelper;
+import com.example.igor.translator.data.local.LocalDBDataSource;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -32,7 +32,7 @@ import dagger.Provides;
 import rx.schedulers.Schedulers;
 
 @Module
-public final class DbModule {
+public final class DataModule {
     @Provides
     @Singleton SQLiteOpenHelper provideOpenHelper(Application application) {
         return new DbOpenHelper(application);
@@ -54,5 +54,11 @@ public final class DbModule {
     @Singleton
     WordListDataSource provideDataSource(BriteDatabase briteDatabase) {
         return new LocalDBDataSource(briteDatabase);
+    }
+
+    @Provides
+    @Singleton
+    ApiDataSource provideApiDataSource(){
+        return new YandexApiDataSource(new YandexApiService());
     }
 }

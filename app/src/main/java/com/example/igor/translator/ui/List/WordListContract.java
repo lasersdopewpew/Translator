@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by igor on 21.08.16.
+ *
  */
 
 public interface WordListContract {
@@ -17,11 +18,19 @@ public interface WordListContract {
         void setWorldList(List<WordEntry> wordEntries);
 
         void removeItem(WordEntry adapterPosition);
+
+        void showError();
+
+        void showEmptyListPlaceHolder();
     }
 
     interface Presenter {
 
         void setView(WordListContract.View view);
+
+        void detachView();
+
+        void start();
 
         void addWordEntry(WordEntry wordEntry);
 

@@ -1,6 +1,6 @@
 package com.example.igor.translator.ui.AddWord;
 
-import com.example.igor.translator.api.YandexAPIService;
+import com.example.igor.translator.data.ApiDataSource;
 
 import javax.inject.Singleton;
 
@@ -16,7 +16,7 @@ import dagger.Provides;
 public class AddWordPresenterModule {
     @Provides
     @Singleton
-    AddWordContract.Presenter provideAddWordPresenter(YandexAPIService apiService){
+    AddWordContract.Presenter provideAddWordPresenter(ApiDataSource apiService){
         return new AddWordPresenter(apiService);
     }
 }

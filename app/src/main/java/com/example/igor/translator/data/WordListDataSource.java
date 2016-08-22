@@ -7,6 +7,7 @@ import rx.Observable;
 
 /**
  * Created by igor on 20.08.16.
+ *
  */
 
 public interface WordListDataSource {

@@ -2,12 +2,12 @@ package com.example.igor.translator.ui.List;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.View;
 
 import com.example.igor.translator.TranslatorApp;
@@ -58,16 +58,34 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
             @Override
             public boolean onQueryTextChange(String newText) {
                 wordListAdapter.setFilter(newText);
-                Log.e("NEWTEXT", newText);
                 return true;
             }
         });
-
-        wordListPresenter.setView(this);
+        svWordSearch.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                wordListAdapter.setFilter(null);
+                return true;
+            }
+        });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-    View.OnClickListener fabAddWordListener = v -> {
+        wordListPresenter.setView(this);
+        wordListPresenter.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        wordListPresenter.detachView();
+    }
+
+    private View.OnClickListener fabAddWordListener = v -> {
         Intent intent = new Intent(WordListActivity.this, AddWordActivity.class);
         WordListActivity.this.startActivityForResult(intent, ADD_WORD);
     };
@@ -80,6 +98,18 @@ public class WordListActivity extends AppCompatActivity implements WordListContr
     @Override
     public void removeItem(WordEntry wordEntry) {
         wordListPresenter.removeWordEntry(wordEntry);
+    }
+
+    @Override
+    public void showError() {
+        Snackbar.make(
+                findViewById(R.id.activity_word_list),
+                R.string.error_network,
+                Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showEmptyListPlaceHolder() {
     }
 
     @Override

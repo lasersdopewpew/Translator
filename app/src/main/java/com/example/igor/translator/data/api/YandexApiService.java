@@ -1,14 +1,11 @@
-package com.example.igor.translator.api;
+package com.example.igor.translator.data.api;
 
-import com.example.igor.translator.api.YandexApiResponse.YandexResponse;
+import com.example.igor.translator.data.api.YandexApiResponse.YandexResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -16,9 +13,10 @@ import rx.Observable;
 
 /**
  * Created by igor on 20.08.16.
+ *
  */
 
-public class YandexAPIService {
+public class YandexApiService {
     private YandexTranslatorAPI yandexAPIService;
 
     private static final int FAMILY = 0x0001; // family filter
@@ -36,19 +34,11 @@ public class YandexAPIService {
     private static final String BASE_URL = "https://dictionary.yandex.net/";
     private static final String API_KEY = "dict.1.1.20160820T000034Z.d3b63c5a40a5cddd.8e78d6af335bf2fa2d41708960abd5fb49ac6ec5";
 
-    YandexAPIService(){
+    public YandexApiService(){
         Gson gson = new GsonBuilder().create();
-
-
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -63,4 +53,5 @@ public class YandexAPIService {
     public Observable<ArrayList<String>> getLangs() {
         return yandexAPIService.getLangs(API_KEY);
     }
+
 }

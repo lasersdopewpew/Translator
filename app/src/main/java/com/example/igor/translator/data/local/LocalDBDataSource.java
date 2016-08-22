@@ -29,7 +29,7 @@ public class LocalDBDataSource implements WordListDataSource {
             + " FROM " + WordEntry.TABLE;
 
     @Inject
-    LocalDBDataSource(BriteDatabase briteDatabase){
+    public LocalDBDataSource(BriteDatabase briteDatabase){
         this.db = briteDatabase;
     }
 

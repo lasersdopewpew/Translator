@@ -1,7 +1,7 @@
 package com.example.igor.translator;
 
-import com.example.igor.translator.api.YandexApiServiceModule;
-import com.example.igor.translator.data.local.DbModule;
+import com.example.igor.translator.data.api.YandexApiServiceModule;
+import com.example.igor.translator.data.DataModule;
 import com.example.igor.translator.ui.AddWord.AddWordActivity;
 import com.example.igor.translator.ui.AddWord.AddWordPresenterModule;
 import com.example.igor.translator.ui.List.WordListActivity;
@@ -16,7 +16,7 @@ import dagger.Component;
  */
 
 @Component(
-    modules = { AppModule.class, YandexApiServiceModule.class, DbModule.class,
+    modules = { AppModule.class, YandexApiServiceModule.class, DataModule.class,
             WordListPresenterModule.class, AddWordPresenterModule.class}
 )
 @Singleton

@@ -21,7 +21,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.igor.translator.data.WordEntry;
 
-final class DbOpenHelper extends SQLiteOpenHelper {
+public final class DbOpenHelper extends SQLiteOpenHelper {
   private static final int VERSION = 1;
 
   private static final String CREATE_ITEM = ""
@@ -34,7 +34,7 @@ final class DbOpenHelper extends SQLiteOpenHelper {
           + ")";
 
   public DbOpenHelper(Context context) {
-        super(context, "wordlist1234567.db", null, VERSION);
+        super(context, "wordlist.db", null, VERSION);
   }
 
   @Override
@@ -42,17 +42,11 @@ final class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_ITEM);
 
         db.insert(WordEntry.TABLE, null, new WordEntry.Builder()
-            .wordOriginal("Original")
-            .wordTranslation("Оригинал")
-            .wordTranscription("Origina")
-            .wordPartOfSpeech("asdd")
+            .wordOriginal("Sun")
+            .wordTranslation("Солнце")
+            .wordTranscription("sʌn")
+            .wordPartOfSpeech("noun")
             .build());
-        db.insert(WordEntry.TABLE, null, new WordEntry.Builder()
-              .wordOriginal("Original 2")
-              .wordTranslation("Оригинал 2")
-              .wordTranscription("Origina 2")
-              .wordPartOfSpeech("asddd")
-              .build());
   }
 
   @Override

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Created by igor on 21.08.16.
+ *
  */
 
 public interface AddWordContract {
@@ -35,7 +36,11 @@ public interface AddWordContract {
 
     interface Presenter {
 
-        void setView(AddWordActivity addWordActivity);
+        void attachView(AddWordActivity addWordActivity);
+
+        void detachView();
+
+        void start();
 
         void fromLangSelected(String code);
 

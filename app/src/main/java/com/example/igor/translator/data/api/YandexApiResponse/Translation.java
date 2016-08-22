@@ -1,4 +1,4 @@
-package com.example.igor.translator.api.YandexApiResponse;
+package com.example.igor.translator.data.api.YandexApiResponse;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

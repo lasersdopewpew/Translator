@@ -1,4 +1,4 @@
-package com.example.igor.translator.api;
+package com.example.igor.translator.data.api;
 
 import dagger.Module;
 import dagger.Provides;
@@ -11,7 +11,7 @@ import dagger.Provides;
 @Module
 public class YandexApiServiceModule {
     @Provides
-    YandexAPIService provideYandexAPIService(){
-        return new YandexAPIService();
+    YandexApiService provideYandexAPIService(){
+        return new YandexApiService();
     }
 }

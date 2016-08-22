@@ -22,12 +22,12 @@ import rx.Observable;
  */
 
 class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
-    List<WordEntry> wordEntries = new ArrayList<>();
-    ArrayList<WordEntry> filteredWordEntries = new ArrayList<>();
+    private List<WordEntry> wordEntries = new ArrayList<>();
+    private ArrayList<WordEntry> filteredWordEntries = new ArrayList<>();
 
-    boolean isFiltering = false;
+    private boolean isFiltering = false;
 
-    WordListContract.View view;
+    private WordListContract.View view;
 
     WordListAdapter(WordListContract.View view){
         this.view = view;
@@ -49,11 +49,11 @@ class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolde
         holder.word.setText(wordEntry.wordOriginal());
         holder.translation.setText(wordEntry.wordTranslation());
 
-        if (wordEntry.partOfSpeech() != null && !wordEntry.partOfSpeech().isEmpty()) {
+        if (wordEntry.partOfSpeech() == null || wordEntry.partOfSpeech().isEmpty()) {
+            holder.pos.setVisibility(View.GONE);
+        } else {
             holder.pos.setText(wordEntry.partOfSpeech());
             holder.pos.setVisibility(View.VISIBLE);
-        } else {
-            holder.pos.setVisibility(View.GONE);
         }
 
         if (wordEntry.wordTranscription() != null) {
@@ -119,7 +119,7 @@ class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolde
         view.removeItem(getEntry(adapterPosition));
     }
 
-    WordEntry getEntry(int pos) {
+    private WordEntry getEntry(int pos) {
         return isFiltering? filteredWordEntries.get(pos): wordEntries.get(pos);
     }
 

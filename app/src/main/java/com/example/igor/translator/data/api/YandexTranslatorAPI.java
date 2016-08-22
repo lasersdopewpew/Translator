@@ -1,19 +1,19 @@
-package com.example.igor.translator.api;
+package com.example.igor.translator.data.api;
 
-import com.example.igor.translator.api.YandexApiResponse.YandexResponse;
+import com.example.igor.translator.data.api.YandexApiResponse.YandexResponse;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
 /**
  * Created by igor on 20.08.16.
+ *
  */
 
-public interface YandexTranslatorAPI {
+interface YandexTranslatorAPI {
     @POST("api/v1/dicservice.json/lookup")
     Observable<YandexResponse> lookup(@Query("key") String key,
                                       @Query("lang") String from,

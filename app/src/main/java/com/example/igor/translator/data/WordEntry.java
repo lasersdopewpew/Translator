@@ -59,6 +59,10 @@ public abstract class WordEntry implements Parcelable {
         return new AutoValue_WordEntry(0, wordOriginal, wordTranslation, wordTranscription, partOfSpeech);
     }
 
+    public static WordEntry create(int id, String wordOriginal, String wordTranslation, String wordTranscription, String partOfSpeech) {
+        return new AutoValue_WordEntry(id, wordOriginal, wordTranslation, wordTranscription, partOfSpeech);
+    }
+
     public static final class Builder {
         private final ContentValues values = new ContentValues();
 
